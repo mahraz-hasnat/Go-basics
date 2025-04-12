@@ -1,7 +1,13 @@
-package main //  main package is the entry point of the program
+package main
 
-import "fmt" // Importing the fmt package for formatted I/O
+import "fmt"
 
-func main(){ // main function is the entry point of the program
-	fmt.Println("Hello, World!") // Print "Hello, World!" to the console
+func addNumbers(a int, b int){
+	fmt.Println(a + b)
+}
+
+func main(){ 
+	a := 5
+	b := 10
+	addNumbers(a, b)
 }
