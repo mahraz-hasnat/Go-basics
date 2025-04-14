@@ -29,9 +29,9 @@ func main() {
 
     randomTexts := "This is a random text"
 
-    fmt.Println(randomTexts)
-    fmt.Println(a)
-    fmt.Println(b)
-    fmt.Println(i)
+    fmt.Println(randomTexts, " ", myNum, " ", myString, " ", myFloat, " ", a, " ", b, " ", i, " ", c, " ", d, " ", e, " ", f)
+    // fmt.Println(a)
+    // fmt.Println(b)
+    // fmt.Println(i)
 
 }
