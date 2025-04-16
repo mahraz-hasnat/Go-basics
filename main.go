@@ -10,7 +10,8 @@ func main() {
 	// local scoped variables
 	x := 5
 	y := 10	
-
+	greeting()
 	add(x, y)
 	add(a, b)
+	goodbye()
 }
