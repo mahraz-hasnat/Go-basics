@@ -5,6 +5,8 @@ import "fmt"
 
 func main() {
 	fmt.Println("This is main world")
+	name := getUserName()
+	fmt.Printf("Hello, %s! Welcome to the world of Go.\n", name)
 }
 
 // The init function is a special function in Go that is executed before the main function.
@@ -13,4 +15,13 @@ func main() {
 
 func init() {
 	fmt.Println("This is init world, and it is executed before main")
+}
+
+// standard or named function
+// The getUserName function prompts the user for their name and returns it as a string.
+func getUserName() string {
+	var name string
+	fmt.Print("Enter your name: ")	
+	fmt.Scanln(&name)
+	return name
 }
