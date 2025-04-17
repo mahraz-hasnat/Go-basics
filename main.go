@@ -4,7 +4,6 @@ import "fmt"
 
 func main() {
 	arr := getArrayLength()
-	// displayArray(arr)
 	getArrayValues(arr)
 	displayArray(arr)
 }
