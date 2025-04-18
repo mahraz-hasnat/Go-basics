@@ -1,12 +1,15 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"funcs/funcs"
+)
+
 
 func main() {
 	fmt.Println("This is main world")
 	name := getUserName()
 	fmt.Printf("Hello, %s! Welcome to the world of Go.\n", name)
-	// add(5, 10)	
 
 	func(a, b int) { // anonymous function
 		fmt.Println(a+b)
@@ -17,6 +20,7 @@ func main() {
 	}
 
 	fmt.Println(multiply(5, 10)) // invoking the anonymous function multiply
+	funcs.FirstOrder() // calling the first-order function from the funcs package
 }
 
 // The init function is a special function in Go that is executed before the main function.
@@ -34,8 +38,4 @@ func getUserName() string {
 	fmt.Print("Enter your name: ")	
 	fmt.Scanln(&name)
 	return name
-}
-
-func add(a, b int){ // another standard function
-	fmt.Println(a + b)
 }
