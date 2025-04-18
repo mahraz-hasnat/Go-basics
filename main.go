@@ -2,11 +2,21 @@ package main
 
 import "fmt"
 
-
 func main() {
 	fmt.Println("This is main world")
 	name := getUserName()
 	fmt.Printf("Hello, %s! Welcome to the world of Go.\n", name)
+	// add(5, 10)	
+
+	func(a, b int) { // anonymous function
+		fmt.Println(a+b)
+	}(5,7) // imidiately invoked function expression (IIFE)
+
+	multiply := func(a, b int) int { // anonymous function
+		return a * b
+	}
+
+	fmt.Println(multiply(5, 10)) // invoking the anonymous function multiply
 }
 
 // The init function is a special function in Go that is executed before the main function.
@@ -24,4 +34,8 @@ func getUserName() string {
 	fmt.Print("Enter your name: ")	
 	fmt.Scanln(&name)
 	return name
+}
+
+func add(a, b int){ // another standard function
+	fmt.Println(a + b)
 }
