@@ -1,41 +1,21 @@
 package main
 
-import (
-	"fmt"
-	"funcs/funcs"
-)
+import "fmt"
 
+type User struct {
+	ID   int
+	Name string
+	Age  int
+}
 
 func main() {
-	fmt.Println("This is main world")
-	name := getUserName()
-	fmt.Printf("Hello, %s! Welcome to the world of Go.\n", name)
+	user1 := User{ID: 1, Name: "Alice", Age: 30}
+	user2 := User{ID: 2, Name: "Bob", Age: 25}
 
-	func(a, b int) { // anonymous function
-		fmt.Println(a+b)
-	}(5,7) // imidiately invoked function expression (IIFE)
-
-	multiply := func(a, b int) int { // anonymous function
-		return a * b
-	}
-
-	fmt.Println(multiply(5, 10)) // invoking the anonymous function multiply
-	funcs.FirstOrder() // calling the first-order function from the funcs package
-}
-
-// The init function is a special function in Go that is executed before the main function.
-// It is used to initialize variables, set up resources, or perform any setup tasks that need to be done before the program starts running.
-//* The init function is executed before the main function in Go.
-
-func init() {
-	fmt.Println("This is init world, and it is executed before main")
-}
-
-// standard or named function
-// The getUserName function prompts the user for their name and returns it as a string.
-func getUserName() string {
-	var name string
-	fmt.Print("Enter your name: ")	
-	fmt.Scanln(&name)
-	return name
+	fmt.Println("ID of user1:", user1.ID)
+	fmt.Println("Name of user1:", user1.Name)
+	fmt.Println("Age of user1:", user1.Age)
+	fmt.Println("ID of user2:", user2.ID)
+	fmt.Println("Name of user2:", user2.Name)
+	fmt.Println("Age of user2:", user2.Age)
 }
