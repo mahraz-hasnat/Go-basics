@@ -2,25 +2,20 @@ package main
 
 import "fmt"
 
-type User struct {
-	ID   int
-	Name string
-	Age  int
-}
-
-func (user User) displayDetails() { // receiver function
-	fmt.Println("User ID:", user.ID)
-	fmt.Println("User Name:", user.Name)
-	fmt.Println("User Age:", user.Age)
+func print(nums *[3]int){ // nums is a pointer to an array of 3 integers
+	fmt.Println(nums) // 0xc00000c0a0
 }
 
 func main() {
-	user1 := User{ID: 1, Name: "Alice", Age: 30}
-	user2 := User{ID: 2, Name: "Bob", Age: 25}
-
-	// printUser(user1)	
-	// printUser(user2)
-
-	user1.displayDetails()
-	user2.displayDetails()
+	arr := [3]int{1,2,3}
+	print(&arr) // pass the address of arr to the function
 }
+
+
+//  a := 1
+//  addOfA := &a // &a is the address of a
+//  fmt.Println(a)    // 1
+//  fmt.Println("Address of a = ", addOfA) // 1
+
+//  *addOfA = 2 // dereference the pointer to change the value of a
+//  fmt.Println("After updating a through pointer", a)    // 2

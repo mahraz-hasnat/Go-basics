@@ -1,163 +1,124 @@
-# 🧱 Go `struct` and Receiver Function Cheat Sheet
+# 📌 Go Pointers Cheat Sheet
+
+Pointers in Go allow you to **reference memory addresses** directly — powerful for optimizing memory usage and modifying values inside functions.
 
 ---
 
-## 📦 What is a `struct`?
+## 🧠 What is a Pointer?
 
-A `struct` is a composite data type that groups together variables under a single name.
+A pointer stores the **memory address** of a value.
+
+```go
+var a int = 42
+var p *int = &a // p points to a
+```
+
+---
+
+## 🔍 Declaring Pointers
+
+```go
+var x int = 10
+var p *int = &x
+```
+
+- `&x` gives the **address of `x`**
+- `*p` dereferences the pointer (gets the value at the address)
+
+---
+
+## 🧪 Example
+
+```go
+x := 5
+ptr := &x         // pointer to x
+fmt.Println(*ptr) // prints: 5
+*ptr = 10         // modifies x
+fmt.Println(x)    // prints: 10
+```
+
+---
+
+## 🎯 Pointer vs Value Function Parameters
+
+### Pass by value (copy):
+
+```go
+func modify(val int) {
+    val = 100
+}
+```
+
+### Pass by reference (pointer):
+
+```go
+func modify(val *int) {
+    *val = 100
+}
+```
+
+```go
+x := 10
+modify(&x)
+fmt.Println(x) // 100
+```
+
+---
+
+## 🛠️ New Keyword
+
+Creates a pointer to a zero-value of the type.
+
+```go
+p := new(int) // *int, initialized to 0
+*p = 25
+fmt.Println(*p) // 25
+```
+
+---
+
+## 💡 Struct with Pointers
 
 ```go
 type Person struct {
     Name string
     Age  int
 }
-```
 
----
-
-## 🧪 Creating and Using a `struct`
-
-```go
-p := Person{Name: "Mehraz", Age: 25}
-fmt.Println(p.Name) // "Mehraz"
-```
-
-### Using the `var` keyword:
-
-```go
-var p Person
-p.Name = "John"
-p.Age = 30
-```
-
----
-
-## 🧰 Struct with Pointer
-
-```go
-p := &Person{Name: "Bob", Age: 28}
-fmt.Println(p.Name) // Go automatically dereferences
-```
-
----
-
-## 🔁 Anonymous Struct
-
-Useful for quick, inline use.
-
-```go
-user := struct {
-    ID   int
-    Name string
-}{ID: 1, Name: "Test"}
-```
-
----
-
-## 🧩 Nested Structs
-
-```go
-type Address struct {
-    City  string
-    State string
-}
-
-type Employee struct {
-    Name    string
-    Address Address
-}
-```
-
----
-
-## 📍 Receiver Functions (Methods on Structs)
-
-Go doesn't have classes, but you can define **methods** on structs using **receiver functions**.
-
-### 🔹 Value Receiver
-
-```go
-func (p Person) Greet() {
-    fmt.Println("Hello, my name is", p.Name)
-}
-```
-
-> Use when the method does not need to modify the struct.
-
----
-
-### 🔹 Pointer Receiver
-
-```go
-func (p *Person) HaveBirthday() {
+func (p *Person) Birthday() {
     p.Age++
 }
 ```
 
-> Use when you want to **modify** the struct or avoid copying large structs.
+> Use pointer receivers to avoid copying and to modify the struct.
 
 ---
 
-## 🎯 Example: Struct + Method
+## 🚫 Nil Pointers
+
+Uninitialized pointers are `nil`.
 
 ```go
-type Circle struct {
-    Radius float64
-}
-
-// Value receiver (read-only)
-func (c Circle) Area() float64 {
-    return 3.14 * c.Radius * c.Radius
-}
-
-// Pointer receiver (modifies struct)
-func (c *Circle) Resize(factor float64) {
-    c.Radius *= factor
+var p *int
+if p == nil {
+    fmt.Println("Pointer is nil")
 }
 ```
 
 ---
 
-## 🧠 When to Use Value vs Pointer Receiver
+## ✅ Summary
 
-| Use Case                 | Value Receiver  | Pointer Receiver    |
-| ------------------------ | --------------- | ------------------- |
-| Reading only             | ✅              | ✅                  |
-| Modifying the struct     | ❌              | ✅                  |
-| Large struct             | ❌              | ✅ (avoids copying) |
-| Interface implementation | ✅/❌ (depends) | ✅ (preferred)      |
-
----
-
-## 🔄 Struct Comparison
-
-Structs can be compared **only if all fields are comparable**:
-
-```go
-type Point struct {
-    X, Y int
-}
-
-p1 := Point{1, 2}
-p2 := Point{1, 2}
-
-fmt.Println(p1 == p2) // true
-```
+| Concept           | Syntax / Description              |
+| ----------------- | --------------------------------- |
+| Declare pointer   | `var p *int = &x`                 |
+| Dereference       | `*p`                              |
+| Address-of        | `&x`                              |
+| `new` function    | `p := new(int)`                   |
+| Pass by reference | `func update(x *int) { *x = 10 }` |
+| Pointer to struct | `p := &Person{Name: "Mehraz"}`    |
+| Nil check         | `if p == nil {}`                  |
 
 ---
 
-## 📑 Summary
-
-| Concept          | Syntax / Description                 |
-| ---------------- | ------------------------------------ |
-| Define Struct    | `type Person struct { Name string }` |
-| Create Struct    | `p := Person{Name: "John"}`          |
-| Anonymous Struct | `s := struct{...}{}`                 |
-| Nested Struct    | One struct inside another            |
-| Value Receiver   | `(s Struct) MethodName()`            |
-| Pointer Receiver | `(s *Struct) MethodName()`           |
-| Method on Struct | Works like OOP class methods         |
-
----
-
-> 💡 Use `struct` + receiver functions in Go as an alternative to OOP-style class behavior.
+> 📌 **Use pointers when you want to modify a value or avoid copying large data.**
