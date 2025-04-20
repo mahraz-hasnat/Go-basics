@@ -1,213 +1,163 @@
-# 🔧 Types of Functions in Go
-
-Go provides several types of functions to suit different programming needs. Below are the most common function types with examples.
+# 🧱 Go `struct` and Receiver Function Cheat Sheet
 
 ---
 
-## 1️⃣ **Basic Function**
+## 📦 What is a `struct`?
 
-A function with fixed parameters and a single return value.
+A `struct` is a composite data type that groups together variables under a single name.
 
 ```go
-func greet(name string) {
-    fmt.Println("Hello", name)
+type Person struct {
+    Name string
+    Age  int
 }
 ```
 
 ---
 
-## 2️⃣ **Function with Return Value**
-
-Functions can return values of any type.
+## 🧪 Creating and Using a `struct`
 
 ```go
-func add(a int, b int) int {
-    return a + b
+p := Person{Name: "Mehraz", Age: 25}
+fmt.Println(p.Name) // "Mehraz"
+```
+
+### Using the `var` keyword:
+
+```go
+var p Person
+p.Name = "John"
+p.Age = 30
+```
+
+---
+
+## 🧰 Struct with Pointer
+
+```go
+p := &Person{Name: "Bob", Age: 28}
+fmt.Println(p.Name) // Go automatically dereferences
+```
+
+---
+
+## 🔁 Anonymous Struct
+
+Useful for quick, inline use.
+
+```go
+user := struct {
+    ID   int
+    Name string
+}{ID: 1, Name: "Test"}
+```
+
+---
+
+## 🧩 Nested Structs
+
+```go
+type Address struct {
+    City  string
+    State string
+}
+
+type Employee struct {
+    Name    string
+    Address Address
 }
 ```
 
 ---
 
-## 3️⃣ **Function with Multiple Return Values**
+## 📍 Receiver Functions (Methods on Structs)
 
-Useful when you want to return multiple results from a function.
+Go doesn't have classes, but you can define **methods** on structs using **receiver functions**.
 
-```go
-func divide(a, b int) (int, int) {
-    return a / b, a % b
-}
-
-q, r := divide(10, 3) // q = 3, r = 1
-```
-
----
-
-## 4️⃣ **Named Return Values**
-
-You can name return variables for clarity and use a naked return.
+### 🔹 Value Receiver
 
 ```go
-func rectInfo(length, width float64) (area, perimeter float64) {
-    area = length * width
-    perimeter = 2 * (length + width)
-    return
+func (p Person) Greet() {
+    fmt.Println("Hello, my name is", p.Name)
 }
 ```
 
+> Use when the method does not need to modify the struct.
+
 ---
 
-## 5️⃣ **Variadic Function**
-
-Accepts a variable number of arguments of the same type.
+### 🔹 Pointer Receiver
 
 ```go
-func sum(nums ...int) int {
-    total := 0
-    for _, n := range nums {
-        total += n
-    }
-    return total
+func (p *Person) HaveBirthday() {
+    p.Age++
+}
+```
+
+> Use when you want to **modify** the struct or avoid copying large structs.
+
+---
+
+## 🎯 Example: Struct + Method
+
+```go
+type Circle struct {
+    Radius float64
 }
 
-total := sum(1, 2, 3, 4) // total = 10
-```
-
----
-
-## 6️⃣ **Anonymous Function (Function Literal)**
-
-Functions defined without a name, often assigned to variables or called inline.
-
-```go
-func() {
-    fmt.Println("I am anonymous")
-}()
-```
-
-```go
-multiply := func(a, b int) int {
-    return a * b
-}
-fmt.Println(multiply(2, 3)) // 6
-```
-
----
-
-## 7️⃣ **Closure**
-
-A function that captures variables from its surrounding scope.
-
-```go
-func counter() func() int {
-    count := 0
-    return func() int {
-        count++
-        return count
-    }
+// Value receiver (read-only)
+func (c Circle) Area() float64 {
+    return 3.14 * c.Radius * c.Radius
 }
 
-next := counter()
-fmt.Println(next()) // 1
-fmt.Println(next()) // 2
-```
-
----
-
-## 8️⃣ **Recursive Function**
-
-A function that calls itself, often used in algorithms.
-
-```go
-func factorial(n int) int {
-    if n == 0 {
-        return 1
-    }
-    return n * factorial(n-1)
+// Pointer receiver (modifies struct)
+func (c *Circle) Resize(factor float64) {
+    c.Radius *= factor
 }
 ```
 
 ---
 
-## 9️⃣ **Function as a Parameter**
+## 🧠 When to Use Value vs Pointer Receiver
 
-Functions can be passed as arguments to other functions.
+| Use Case                 | Value Receiver  | Pointer Receiver    |
+| ------------------------ | --------------- | ------------------- |
+| Reading only             | ✅              | ✅                  |
+| Modifying the struct     | ❌              | ✅                  |
+| Large struct             | ❌              | ✅ (avoids copying) |
+| Interface implementation | ✅/❌ (depends) | ✅ (preferred)      |
+
+---
+
+## 🔄 Struct Comparison
+
+Structs can be compared **only if all fields are comparable**:
 
 ```go
-func operate(a, b int, fn func(int, int) int) int {
-    return fn(a, b)
+type Point struct {
+    X, Y int
 }
 
-result := operate(5, 3, func(x, y int) int {
-    return x - y
-})
-// result = 2
+p1 := Point{1, 2}
+p2 := Point{1, 2}
+
+fmt.Println(p1 == p2) // true
 ```
 
 ---
 
-## 🔟 **Function as a Return Value**
+## 📑 Summary
 
-Functions can return other functions.
-
-```go
-func makeMultiplier(factor int) func(int) int {
-    return func(n int) int {
-        return n * factor
-    }
-}
-
-double := makeMultiplier(2)
-fmt.Println(double(4)) // 8
-```
+| Concept          | Syntax / Description                 |
+| ---------------- | ------------------------------------ |
+| Define Struct    | `type Person struct { Name string }` |
+| Create Struct    | `p := Person{Name: "John"}`          |
+| Anonymous Struct | `s := struct{...}{}`                 |
+| Nested Struct    | One struct inside another            |
+| Value Receiver   | `(s Struct) MethodName()`            |
+| Pointer Receiver | `(s *Struct) MethodName()`           |
+| Method on Struct | Works like OOP class methods         |
 
 ---
 
-## 🔁 **init() Function**
-
-- `init()` is a special function in Go that runs **automatically before `main()`**.
-- Every Go file can have **multiple `init()` functions**.
-- Commonly used for **setup**, like initializing variables, checking envs, etc.
-- It **cannot take arguments or return values**.
-
-```go
-package main
-
-import "fmt"
-
-func init() {
-    fmt.Println("init() called before main()")
-}
-
-func main() {
-    fmt.Println("main() function")
-}
-```
-
-**Output:**
-
-```
-init() called before main()
-main() function
-```
-
----
-
-## 🏁 Summary Table
-
-| Type                  | Description                             |
-| --------------------- | --------------------------------------- |
-| Basic Function        | Simple function with fixed parameters   |
-| Return Function       | Returns one value                       |
-| Multiple Returns      | Returns multiple values                 |
-| Named Returns         | Named return variables and naked return |
-| Variadic Function     | Accepts variable number of arguments    |
-| Anonymous Function    | Function without a name                 |
-| Closure               | Captures variables from outer scope     |
-| Recursive Function    | Calls itself                            |
-| Function as Parameter | Pass function as argument               |
-| Function as Return    | Return a function from another function |
-| `init()` Function     | Runs before `main()`, used for setup    |
-
----
-
-> 🧠 **Tip:** Treat `init()` like a "constructor" for your package — great for initializing state or validating config before your program starts.
+> 💡 Use `struct` + receiver functions in Go as an alternative to OOP-style class behavior.
