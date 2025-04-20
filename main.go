@@ -8,14 +8,19 @@ type User struct {
 	Age  int
 }
 
+func (user User) displayDetails() { // receiver function
+	fmt.Println("User ID:", user.ID)
+	fmt.Println("User Name:", user.Name)
+	fmt.Println("User Age:", user.Age)
+}
+
 func main() {
 	user1 := User{ID: 1, Name: "Alice", Age: 30}
 	user2 := User{ID: 2, Name: "Bob", Age: 25}
 
-	fmt.Println("ID of user1:", user1.ID)
-	fmt.Println("Name of user1:", user1.Name)
-	fmt.Println("Age of user1:", user1.Age)
-	fmt.Println("ID of user2:", user2.ID)
-	fmt.Println("Name of user2:", user2.Name)
-	fmt.Println("Age of user2:", user2.Age)
+	// printUser(user1)	
+	// printUser(user2)
+
+	user1.displayDetails()
+	user2.displayDetails()
 }
