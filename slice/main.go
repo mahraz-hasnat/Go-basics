@@ -34,4 +34,7 @@ Slice can be created in multiple ways
 3. literal slice
 4. using default func make()
 
+We can user a slice just like an array..
+
+
 */
